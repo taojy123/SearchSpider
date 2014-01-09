@@ -41,38 +41,47 @@ def get_page(url, data=None):
     return "Null"
 
 
-keyword = "abc"
-filterword = "abcnews".decode("gbk")
+keyword = "我们".decode("gbk").encode("utf8")
+filterword = "明星参加".decode("gbk")
+
+def search_so(keyword, filterword):
+
+    url = "http://www.so.com/s?q=" + urllib.quote(keyword)
+
+    res = []
+    read = []
+    for pnum in range(1,11):
+        print "opening page", pnum
+        murl = url + "&pn=" + str(pnum)
+        mp = get_page(murl)
+        mp = mp.decode("utf8", "ignore")
+        mp = BeautifulSoup.BeautifulSoup(mp)
+        ul = mp.find(id="m-result")
+        if not ul:
+            continue
+        lis = ul.findAll("li", "res-list")
+
+        for i in range(len(lis)):
+            item = lis[i]
+            sn = (pnum-1)*10 + i + 1
+            text = item.getText()
+            if filterword in text:
+                a = item.find("a")
+                if a:
+                    href = a.get("href")
+                    if href not in read:
+                        res.append((sn, str(href)))
+                        read.append(href)
+                        print href
+        
+    res.sort()
+    pprint.pprint(res)
+
+    return res
 
 
-url = "http://www.so.com/s?q=" + urllib.quote(keyword)
-
-res = []
-for pnum in range(1,11):
-    print "opening page", pnum
-    murl = url + "&pn=" + str(pnum)
-    mp = get_page(murl)
-    mp = BeautifulSoup.BeautifulSoup(mp)
-    ul = mp.find(id="m-result")
-    if not ul:
-        continue
-    lis = ul.findAll("li", "res-list")
-
-    for i in range(len(lis)):
-        item = lis[i]
-        sn = (pnum-1)*10 + i + 1
-        text = item.getText()
-        if filterword in text:
-            a = item.find("a")
-            if a:
-                href = a.get("href")
-                res.append((sn, href))
-                print href
-    
-res.sort()
-pprint.pprint(res)
-
-
+if __name__ == "__main__":
+    search_so(keyword, filterword)
 
 
 

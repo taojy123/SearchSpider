@@ -50,35 +50,39 @@ def get_page(url, data=None):
 keyword = "abc"
 filterword = "abcnews".decode("gbk")
 
-url = "http://www.baidu.com/s?rn=100&wd=" + urllib.quote(keyword)
-mp = get_page(url)
-mp = BeautifulSoup.BeautifulSoup(mp)
+def search_baidu(keyword, filterword):
 
-tabs = mp.findAll("table", "result")
-divs = mp.findAll("div", "result-op")
+    url = "http://www.baidu.com/s?rn=100&wd=" + urllib.quote(keyword)
+    mp = get_page(url)
+    mp = BeautifulSoup.BeautifulSoup(mp)
 
-links = []
-for item in tabs + divs:
-    sn = item.get("id")
-    text = item.getText()
-    if filterword in text:
-        a = item.find("a")
-        if a:
-            href = a.get("href")
-            links.append((href, sn))
-            
-pprint.pprint(links)
+    tabs = mp.findAll("table", "result")
+    divs = mp.findAll("div", "result-op")
 
-res = []
-for link in links:
-    tp = urllib2.urlopen(link[0])
-    url = tp.url
-    sn = link[1]
-    res.append((int(sn), url))
-    print url
-    
-res.sort()
-pprint.pprint(res)
+    links = []
+    for item in tabs + divs:
+        sn = item.get("id")
+        text = item.getText()
+        if filterword in text:
+            a = item.find("a")
+            if a:
+                href = a.get("href")
+                links.append((href, sn))
+                
+    pprint.pprint(links)
+
+    res = []
+    for link in links:
+        tp = urllib2.urlopen(link[0])
+        url = tp.url
+        sn = link[1]
+        res.append((int(sn), str(url)))
+        print url
+        
+    res.sort()
+    pprint.pprint(res)
+
+    return res
 
 
 
