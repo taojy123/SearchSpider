@@ -3,23 +3,27 @@
 from baidu import search_baidu
 from so import search_so
 
-keyword = raw_input("请输入搜索关键字：")
+keywords = raw_input("请输入搜索关键字：").split()
 filterword = raw_input("请输入筛选关键字：")
 filterword = filterword.decode("gbk")
 
-res_baidu = search_baidu(keyword, filterword)
-res_so = search_so(keyword.decode("gbk").encode("utf8"), filterword)
+open("baidu.txt", "w").write("排名\t链接\t关键词\n")
+open("360.txt", "w").write("排名\t链接\t关键词\n")
 
-s_baidu = "排名\t链接\n"
-for r in res_baidu:
-    s_baidu += "%d\t%s\n" % (r[0], r[1])
-open("baidu.txt", "w").write(s_baidu)
-    
 
-s_so = "排名\t链接\n"
-for r in res_so:
-    s_so += "%d\t%s\n" % (r[0], r[1])
-open("360.txt", "w").write(s_so)
+print keywords
+
+for keyword in keywords:
+
+    res_baidu = search_baidu(keyword, filterword)
+    for r in res_baidu:
+        t = "%d\t%s\t%s\n" % (r[0], r[1], keyword)
+        open("baidu.txt", "a").write(t)
+        
+    res_so = search_so(keyword.decode("gbk").encode("utf8"), filterword)
+    for r in res_so:
+        t += "%d\t%s\t%s\n" % (r[0], r[1], keyword)
+        open("360.txt", "a").write(t)
 
 print
 print "完成"
