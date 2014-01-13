@@ -73,11 +73,15 @@ def search_baidu(keyword, filterword):
 
     res = []
     for link in links:
-        tp = urllib2.urlopen(link[0])
-        url = tp.url
-        sn = link[1]
-        res.append((int(sn), str(url)))
-        print url
+        try:
+            tp = urllib2.urlopen(link[0])
+            url = tp.url
+            sn = link[1]
+            res.append((int(sn), str(url)))
+            print url
+        except:
+            print "can't open", link[0]
+            open("error.txt", "a").write(link[0] + "\n")
         
     res.sort()
     pprint.pprint(res)
