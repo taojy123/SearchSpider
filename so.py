@@ -70,7 +70,7 @@ def search_so(keyword, filterword):
                 if a:
                     href = a.get("href")
                     if href not in read:
-                        res.append((sn, str(href)))
+                        res.append((sn, href))
                         read.append(href)
                         print href
         

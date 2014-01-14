@@ -81,7 +81,7 @@ def search_baidu(keyword, filterword):
             print url
         except:
             print "can't open", link[0]
-            open("error.txt", "a").write(link[0] + "\n")
+            #open("error.txt", "a").write(link[0] + "\n")
         
     res.sort()
     pprint.pprint(res)

@@ -1,31 +1,45 @@
 # -*- coding: cp936 -*-
 
+import easygui
 from baidu import search_baidu
 from so import search_so
 
-keywords = raw_input("请输入搜索关键字：").split()
-filterword = raw_input("请输入筛选关键字：")
-filterword = filterword.decode("gbk")
+keywords = easygui.enterbox(u"请输入关键词，多个关键词以空格间隔开").split()
+filterword = easygui.enterbox(u"请输入筛选关键字：")
 
-open("baidu.txt", "w").write("排名\t链接\t关键词\n")
-open("360.txt", "w").write("排名\t链接\t关键词\n")
+path = easygui.diropenbox(u"请选择输出目录位置".encode("utf8")).encode("gbk")
+
+baidufile = path + r"\baidu.txt"
+sofile = path + r"\360.txt"
+
+open(baidufile, "w").write("排名\t链接\t关键词\n")
+open(sofile, "w").write("排名\t链接\t关键词\n")
 
 
-print keywords
 
 for keyword in keywords:
 
-    res_baidu = search_baidu(keyword, filterword)
-    for r in res_baidu:
-        t = "%d\t%s\t%s\n" % (r[0], r[1], keyword)
-        open("baidu.txt", "a").write(t)
-        
-    res_so = search_so(keyword.decode("gbk").encode("utf8"), filterword)
-    for r in res_so:
-        t += "%d\t%s\t%s\n" % (r[0], r[1], keyword)
-        open("360.txt", "a").write(t)
+    print keyword
 
-print
-print "完成"
-print "数据已保存至 baidu.txt 和 360.txt 文件中"
-raw_input("按回车键退出")
+    res_baidu = search_baidu(keyword.encode("gbk"), filterword)
+    
+    for r in res_baidu:
+        t = u"%d\t%s\t%s\n" % (r[0], r[1], keyword)
+        t = t.encode("gbk")
+        open(baidufile, "a").write(t)
+        
+    res_so = search_so(keyword.encode("utf8"), filterword)
+    for r in res_so:
+        t = u"%d\t%s\t%s\n" % (r[0], r[1], keyword)
+        t = t.encode("gbk")
+        open(sofile, "a").write(t)
+
+
+easygui.msgbox(u"完成！处理结果保存至 " + path.decode("gbk") + u" 目录中")
+
+
+
+
+
+
+
