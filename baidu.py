@@ -74,7 +74,7 @@ def search_baidu(keyword, filterword):
     res = []
     for link in links:
         try:
-            tp = urllib2.urlopen(link[0])
+            tp = urllib2.urlopen(link[0], timeout=60)
             url = tp.url
             sn = link[1]
             res.append((int(sn), str(url)))

@@ -4,8 +4,8 @@ import easygui
 from baidu import search_baidu
 from so import search_so
 
-keywords = easygui.enterbox(u"请输入关键词，多个关键词以空格间隔开").split()
-filterword = easygui.enterbox(u"请输入筛选关键字：")
+keywords = easygui.enterbox(u"请输入关键词，多个关键词以空格间隔开", title=u"贵仁医疗网络服务有限公司(百度/360快速排名)").split()
+filterword = easygui.enterbox(u"请输入筛选关键字：", title=u"见效后付费 联系方式QQ:10855513")
 
 path = easygui.diropenbox(u"请选择输出目录位置".encode("utf8")).encode("gbk")
 
